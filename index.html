@@ -226,6 +226,8 @@ select[name="actividadEconomica"]{ min-height:42px; }
 .declaration-list{display:grid;gap:12px;margin-top:14px;}
 .declaration-list input{margin-top:3px;accent-color:var(--red);}
 @media (max-width:640px){.check-grid{grid-template-columns:1fr;}.question{display:block}.question .radio-row{margin-top:9px;}}
+.conditional-juridica, .juridica-only { transition: opacity .15s ease; }
+.conditional-hidden { display:none !important; }
 </style>
 </head>
 <body>
@@ -255,10 +257,6 @@ select[name="actividadEconomica"]{ min-height:42px; }
 <div class="field">
 <label>Fecha <span class="req">*</span></label>
 <input name="fechaVinculacion" required="" type="date"/>
-</div>
-<div class="field">
-<label>Ciudad <span class="req">*</span></label>
-<input name="ciudad" required="" type="text"/>
 </div>
 <div class="field"><label>País <span class="req">*</span></label><select id="pais" name="pais" required=""><option selected="" value="Colombia">Colombia</option></select></div><div class="field">
 <label>Departamento <span class="req">*</span></label>
@@ -306,7 +304,7 @@ select[name="actividadEconomica"]{ min-height:42px; }
 <div class="grid g4" style="margin-top:14px;">
 <div class="field"><label>¿Cuál? (si aplica)</label><input name="otroTipoIdentificacion"/></div>
 <div class="field"><label>Tipo de empresa</label>
-<select name="tipoEmpresa"><option value="">Seleccione…</option><option>Pública</option><option>Mixta</option><option>Privada</option><option>Extranjera</option></select>
+<select name="tipoEmpresa"><option value="">Seleccione…</option><option>Pública</option><option>Mixta</option><option>Privada</option><option>Extranjera</option><option>Otro</option><option>No aplica</option></select>
 </div>
 <div class="field"><label>Actividad económica</label>
 <select name="actividadTipo"><option value="">Seleccione…</option><option>Industrial</option><option>Agrícola</option><option>Comercial</option><option>Transporte</option><option>Asegurador</option><option>Servicios financieros</option><option>Servicios</option><option>Otra</option></select>
@@ -336,7 +334,7 @@ select[name="actividadEconomica"]{ min-height:42px; }
 </div>
 </div>
 <!-- REPRESENTANTE LEGAL -->
-<div class="section">
+<div class="section conditional-juridica" id="representanteSection">
 <h2>3. Representante legal</h2>
 <div class="body">
 <div class="grid g4">
@@ -377,7 +375,7 @@ select[name="actividadEconomica"]{ min-height:42px; }
 </div>
 </div>
 <!-- 5 ACCIONISTAS -->
-<div class="section">
+<div class="section conditional-juridica" id="accionistasSection">
 <h2>5. Accionistas, socios y/o beneficiarios finales</h2>
 <div class="body">
 <div class="note">1. Relacione los accionistas o socios que tengan directa o indirectamente igual o más del 5% del capital social, aporte o participación.<br/>2. Si el accionista es una persona jurídica, relacione la información de su composición accionaria hasta la persona natural que ejerce control final sobre la entidad.<br/>3. Si alguno de los accionistas o socios es una PEP, diligencie el Formulario de Conocimiento de Personas Expuestas Públicamente (PEP).</div>
@@ -390,7 +388,7 @@ select[name="actividadEconomica"]{ min-height:42px; }
 </div>
 </div>
 <!-- 6 FINANCIERA -->
-<div class="section">
+<div class="section" id="financieraSection">
 <h2>6. Información financiera (último periodo declarado)</h2>
 <div class="body">
 <div class="grid g2">
@@ -406,6 +404,9 @@ select[name="actividadEconomica"]{ min-height:42px; }
 <div class="grid g2" style="margin-top:14px;">
 <div class="field"><label>Concepto de ingresos no operacionales</label><textarea name="conceptoIngresosNoOperacionales"></textarea></div>
 <div class="field"><label>Concepto de gastos no operacionales</label><textarea name="conceptoGastosNoOperacionales"></textarea></div>
+</div>
+<div class="juridica-only" style="margin-top:14px;">
+<div class="file-item"><div class="info"><b>Estados financieros</b><span>Adjunte los estados financieros correspondientes al último periodo declarado. Este documento aplica únicamente para persona jurídica.</span></div><input accept=".pdf,.jpg,.jpeg,.png,.xls,.xlsx" data-file="estadosFinancieros" type="file"/><span class="file-status">✓ Listo</span></div>
 </div>
 </div>
 </div>
@@ -468,18 +469,18 @@ select[name="actividadEconomica"]{ min-height:42px; }
 </div>
 </div>
 <!-- 9 DOCUMENTOS -->
-<div class="section">
+<div class="section" id="documentosSection">
 <h2>9. Documentos requeridos</h2>
 <div class="body">
-<div class="file-item"><div class="info"><b>Persona jurídica — 1. Certificado original de existencia y representación legal</b><span>Vigencia no superior a 30 días, expedido por la Cámara de Comercio.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certExistencia" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 2. Fotocopia del Registro Único Tributario RUT</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="rut" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 3. Documento de identificación del Representante Legal</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="idRepresentanteLegal" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 4. Declaración de Renta del último periodo gravable declarado</b><span>Si está obligado a declarar.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="declaracionRenta" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 5. Certificación Bancaria</b><span>No mayor a 30 días.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificacionBancaria" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 6. Soportes de idoneidad</b><span>Mecánicos, auditores, mediciones higiénicas y psicólogos.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="soportesIdoneidad" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 7. Resolución de habilitación / Licencia en salud ocupacional</b><span>IPS-PROFESIONAL SST-AUDIOTOR.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="resolucionHabilitacion" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 8. Certificado del Sistema de Gestión en Seguridad y Salud en el Trabajo o avances</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificadoSst" type="file"/><span class="file-status">✓ Listo</span></div>
-<div class="file-item"><div class="info"><b>Persona jurídica — 9. Certificados que aplican a CDA (ONAC)</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificadosCdaOnac" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 1. Certificado original de existencia y representación legal</b><span>Vigencia no superior a 30 días, expedido por la Cámara de Comercio.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certExistencia" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 2. Fotocopia del Registro Único Tributario RUT</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="rut" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 3. Documento de identificación del Representante Legal</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="idRepresentanteLegal" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 4. Declaración de Renta del último periodo gravable declarado</b><span>Si está obligado a declarar.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="declaracionRenta" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 5. Certificación Bancaria</b><span>No mayor a 30 días.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificacionBancaria" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 6. Soportes de idoneidad</b><span>Mecánicos, auditores, mediciones higiénicas y psicólogos.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="soportesIdoneidad" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 7. Resolución de habilitación / Licencia en salud ocupacional</b><span>IPS-PROFESIONAL SST-AUDIOTOR.</span></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="resolucionHabilitacion" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 8. Certificado del Sistema de Gestión en Seguridad y Salud en el Trabajo o avances</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificadoSst" type="file"/><span class="file-status">✓ Listo</span></div>
+<div class="juridica-doc file-item"><div class="info"><b>Persona jurídica — 9. Certificados que aplican a CDA (ONAC)</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="certificadosCdaOnac" type="file"/><span class="file-status">✓ Listo</span></div>
 <div class="subhead">Documentos requeridos para persona natural</div>
 <div class="file-item"><div class="info"><b>1. RUT con fecha de expedición no mayor a 30 días</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="rutNatural" type="file"/><span class="file-status">✓ Listo</span></div>
 <div class="file-item"><div class="info"><b>2. Fotocopia legible del documento de identificación del representante legal</b></div><input accept=".pdf,.jpg,.jpeg,.png" data-file="idNatural" type="file"/><span class="file-status">✓ Listo</span></div>
@@ -527,7 +528,7 @@ select[name="actividadEconomica"]{ min-height:42px; }
 </div>
 </div>
 <!-- 13 FIRMA -->
-<div class="section">
+<div class="section" id="firmaSection">
 <h2>13. Firma representante legal</h2>
 <div class="body">
 <div class="note">Se firma este documento como constancia de haber leído, entendido y aceptado su contenido, se declara que la información suministrada es exacta y verídica en todas sus partes.</div>
@@ -680,6 +681,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   populateCiiuSelect('ciiuSecundaria');
   populateCiiuSelect('actividadEconomica');
   loadColombiaLocations();
+  updatePersonaSections();
 
   if (!ENDPOINT_URL || ENDPOINT_URL.startsWith("PEGAR_AQUI")) {
     // leave the warning banner visible
@@ -689,16 +691,64 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
  
-/* ---------- toggle persona natural / jurídica label ---------- */
-document.getElementById('tipoPersona').addEventListener('change', (e) => {
+/* ---------- persona natural / jurídica ---------- */
+function setSectionDisabled(section, disabled) {
+  if (!section) return;
+  section.classList.toggle('conditional-hidden', disabled);
+  section.querySelectorAll('input, select, textarea, button').forEach(el => {
+    if (el.type === 'file') el.disabled = disabled;
+    else el.disabled = disabled;
+  });
+}
+
+function updatePersonaSections() {
+  const tipo = document.getElementById('tipoPersona')?.value;
+  const natural = tipo === 'Natural';
+  const juridica = tipo === 'Jurídica';
+
   const label = document.querySelector('#razonSocialWrap label');
-  if (e.target.value === 'Natural') {
-    label.innerHTML = 'Nombres y apellidos completos <span class="req">*</span>';
-  } else {
-    label.innerHTML = 'Razón social <span class="req">*</span>';
+  if (label) label.innerHTML = natural
+    ? 'Nombres y apellidos completos <span class="req">*</span>'
+    : 'Razón social <span class="req">*</span>';
+
+  const rep = document.getElementById('representanteSection');
+  const acc = document.getElementById('accionistasSection');
+  const financiera = document.getElementById('financieraSection');
+  setSectionDisabled(rep, natural || !juridica);
+  setSectionDisabled(acc, natural || !juridica);
+  setSectionDisabled(financiera, natural || !juridica);
+
+  document.querySelectorAll('.juridica-doc').forEach(el => {
+    el.classList.toggle('conditional-hidden', !juridica);
+    el.querySelectorAll('input,select,textarea').forEach(i => i.disabled = !juridica);
+  });
+  document.querySelectorAll('.juridica-only').forEach(el => {
+    el.classList.toggle('conditional-hidden', !juridica);
+    el.querySelectorAll('input,select,textarea').forEach(i => i.disabled = !juridica);
+  });
+
+  // En persona natural no se diligencian campos propios de empresa jurídica.
+  const tipoEmpresa = document.querySelector('[name="tipoEmpresa"]');
+  if (tipoEmpresa) {
+    if (natural) {
+      tipoEmpresa.value = 'No aplica';
+      tipoEmpresa.disabled = true;
+    } else {
+      tipoEmpresa.disabled = false;
+    }
   }
-});
- 
+
+  // La firma se adapta al tipo de persona: para natural no dice representante legal.
+  const firmaTitle = document.querySelector('#firmaFileItem b');
+  const firmaSectionTitle = document.querySelector('#firmaFileItem')?.closest('.field')?.querySelector('label');
+  const h2Firma = document.querySelector('#firmaSection h2');
+  if (firmaTitle) firmaTitle.textContent = natural ? 'Imagen de la firma' : 'Imagen de la firma del representante legal';
+  if (firmaSectionTitle) firmaSectionTitle.innerHTML = natural ? 'Firma <span class="req">*</span>' : 'Firma representante legal <span class="req">*</span>';
+  if (h2Firma) h2Firma.textContent = natural ? '13. Firma' : '13. Firma representante legal';
+}
+
+document.getElementById('tipoPersona').addEventListener('change', updatePersonaSections);
+
 /* ---------- dynamic tables ---------- */
 const tableConfigs = {
   accionaria: {
@@ -908,6 +958,7 @@ form.addEventListener('submit', async (e) => {
     resultBanner.className = 'result-banner ok show';
     submitMsg.textContent = '';
     form.reset();
+  updatePersonaSections();
     const depSelect = document.getElementById('departamento');
     const munSelect = document.getElementById('municipio');
     if (depSelect) {
